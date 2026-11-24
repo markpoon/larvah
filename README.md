@@ -73,7 +73,7 @@ Example: `add this to the mask: do five rounds of review before answering`, appr
 cd larvah && python3 -m unittest discover -s tests
 ```
 
-[TESTING.md](TESTING.md) lists what has been verified and the memory tests still to run. The design is in [Larvah plan.md](Larvah%20plan.md).
+[TESTING.md](TESTING.md) describes the test framework, what has been verified and the app-side tests still to run. The design is in [Larvah plan.md](Larvah%20plan.md).
 
 ## License
 

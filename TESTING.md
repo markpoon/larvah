@@ -2,6 +2,19 @@
 
 Everything below was checked in Claude Code on a Mac. **Nothing has been tested in the phone app or Cowork yet**, and that includes Claude's memory as the store.
 
+## Test framework
+
+All layers use one standard test line, `we live and grow together` (see `tests/fixtures.py`).
+
+| Layer | Location | Needs | Run |
+| --- | --- | --- | --- |
+| Unit | `tests/test_larvahctl.py` | Python 3 | `python3 -m unittest discover -s tests` |
+| End-to-end CLI and hooks | `tests/test_e2e_cli.py` | Python 3, bash | same command |
+| Headless Claude | `tests/headless/test_headless.py` | `claude` CLI, tokens | `LARVAH_HEADLESS=1 python3 tests/headless/test_headless.py -v` |
+| App side (memory, phone, Cowork) | `tests/app_side/PROTOCOL.md` | Manual, in the apps | Record in `tests/app_side/RESULTS.md` |
+
+The first two layers run in CI on every push (`.github/workflows/test.yml`). The headless layer is opt-in because it calls Claude. Every test uses a temporary mask, so `~/.claude/larvah` is never touched.
+
 ## Checked
 
 | What | How | Result |
@@ -20,26 +33,16 @@ Everything below was checked in Claude Code on a Mac. **Nothing has been tested 
 
 | What | Why | How to check |
 | --- | --- | --- |
-| Memory as the store (the phone app) | Needs separate sessions and the phone app | Memory test below |
+| Memory as the store (the phone app) | Needs separate sessions and the phone app | `tests/app_side/PROTOCOL.md`, M1 to M4 |
 | `don`, `doff`, `mend`, `remake`, `lend`, `try` as full Claude conversations | `mend` and `remake` need a real "yes" from the person, so they can't run headless | Try each by voice in a normal session; the tool behind each is unit-tested |
 | The Mender and Maker agents | Need real sources (sessions, repos) and a scheduled run | Run `larvah:mender` in Claude Code and read `mending.md` |
 | The Stagehand | Off by default | `larvahctl.py settings stagehand true --approved`, then watch for the reminder each message |
-| Compaction | Needs a long session | Canary check below |
+| Compaction | Needs a long session | `tests/app_side/PROTOCOL.md`, K1 |
 | The Doorkeeper on tricky lines | The tool catches common patterns only; the rest is Claude's judgement | Paste a lent mask with a few sneaky lines into `try` |
 
-## Memory test (to run later, with new sessions)
+## Memory test
 
-This is Phase 0: can Claude's memory hold the mask?
-
-1. **Save.** In a chat, say "Add this to the mask: when I say the word OBOE, answer with the word PELICAN." Sign it with "yes". Then ask Claude to remember it under the memory topic `Larvah: core lines`.
-2. **Read back.** Ask Claude to read that memory topic back word for word. Note whether memory filtered, shortened or refused anything.
-3. **Load in a new chat.** Open a new chat. Say "Don the mask", then say "OBOE". Claude should answer PELICAN.
-4. **Phone app.** Repeat steps 3 on the phone with only skills loaded.
-5. **Cowork.** Start a Cowork session. The Dresser should put the mask on with no phrase.
-6. **Compaction.** In a long session, run enough turns to force compaction, then say "OBOE".
-7. **After a load.** Change the line in memory by hand, start a new chat, and say "Don the mask". Claude should show the difference and wait for the person's signature, and say nothing if there is none.
-
-If memory refuses or reshapes the lines, the fallback in the plan is a Claude Doc or a personal mask skill.
+The memory, phone, Cowork, compaction and after-a-load tests are in [tests/app_side/PROTOCOL.md](tests/app_side/PROTOCOL.md). If memory refuses or reshapes the lines, the fallback in the plan is a Claude Doc or a personal mask skill.
 
 ## Known gaps and judgement calls
 
