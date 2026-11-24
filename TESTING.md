@@ -1,6 +1,6 @@
 # Testing Larvah
 
-Last updated Nov 24, 2026. Everything below was checked in Claude Code on a Mac. **Nothing has been tested in the phone app or Cowork yet**, and that includes Claude's memory as the store.
+Everything below was checked in Claude Code on a Mac. **Nothing has been tested in the phone app or Cowork yet**, and that includes Claude's memory as the store.
 
 ## Checked
 
@@ -17,7 +17,7 @@ Last updated Nov 24, 2026. Everything below was checked in Claude Code on a Mac.
 | What | Why | How to check |
 | --- | --- | --- |
 | Memory as the store (the phone app) | Needs separate sessions and the phone app | Memory test below |
-| `don`, `doff`, `mend`, `remake`, `lend`, `try` as full Claude conversations | `mend` and `remake` need a real "yes" from you, so they can't run headless | Try each by voice in a normal session; the tool behind each is unit-tested |
+| `don`, `doff`, `mend`, `remake`, `lend`, `try` as full Claude conversations | `mend` and `remake` need a real "yes" from the person, so they can't run headless | Try each by voice in a normal session; the tool behind each is unit-tested |
 | The Mender and Maker agents | Need real sources (sessions, repos) and a scheduled run | Run `larvah:mender` in Claude Code and read `mending.md` |
 | The Stagehand | Off by default | `larvahctl.py settings stagehand true --approved`, then watch for the reminder each message |
 | Compaction | Needs a long session | Canary check below |
@@ -33,13 +33,13 @@ This is Phase 0: can Claude's memory hold the mask?
 4. **Phone app.** Repeat steps 3 on the phone with only skills loaded.
 5. **Cowork.** Start a Cowork session. The Dresser should put the mask on with no phrase.
 6. **Compaction.** In a long session, run enough turns to force compaction, then say "OBOE".
-7. **After a load.** Change the line in memory by hand, start a new chat, and say "Don the mask". Claude should show the difference and wait for your signature, and say nothing if there is none.
+7. **After a load.** Change the line in memory by hand, start a new chat, and say "Don the mask". Claude should show the difference and wait for the person's signature, and say nothing if there is none.
 
 If memory refuses or reshapes the lines, the fallback in the plan is a Claude Doc or a personal mask skill.
 
 ## Known gaps and judgement calls
 
-- **License.** MIT, added Nov 24, 2026: `LICENSE` file plus `"license": "MIT"` in `plugin.json`.
+- **License.** MIT: `LICENSE` file plus `"license": "MIT"` in `plugin.json`.
 - **Icon.** There is no plugin icon yet. The directory only warns about this.
 - **JSON, not YAML.** The plan's example shows YAML. The workshop copy is JSON so the tool needs nothing beyond Python 3. The fields are the same.
 - **Agents' write limits are by instruction.** The Mender and Maker are told to write only `mending.md` and `drafts/`, but they hold the Write tool, so the limit is not enforced by the platform. The mask itself is protected by the `--approved` flag, which the agents are told never to pass.

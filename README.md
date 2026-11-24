@@ -1,76 +1,88 @@
 # Larvah
 
-*The old word for a mask, misspelled so it is only ours.*
+Larvah is a plugin that carries a written mask between Claude and the person it works with. The mask is a short, approved record of the terms of the interface: preferences, limits, projects, facts, habits and priorities. Larvah is the conduit. It proposes terms, the person accepts or rejects each one, and the accepted terms are worn by Claude until the mask is taken off.
 
-Larvah keeps a written mask of how you want Claude to work with you. Say "don the mask" and Claude works under it; say "doff the mask" and it stops. There is one mask, it is either on or off, and you approve every change to it. Nothing leaves Claude: there are no servers, and nothing is sent anywhere.
+The mask has two states, on and off. Every change to it needs the person's explicit approval, and nothing leaves Claude: there are no servers, and nothing is sent anywhere.
 
-The full design is in [Larvah plan.md](Larvah%20plan.md). 
-## Say it out loud
+*Larvah* is a respelling of the Latin *larva*, a mask.
 
-| Say | Type | What happens |
+## How the interface is negotiated
+
+1. **Propose.** Larvah (or the person) puts forward a line, marked as stated, observed or inferred.
+2. **Approve.** The line is shown as written. Nothing is saved without a yes to that exact line.
+3. **Wear.** Stated lines, and observed lines the person has confirmed, are applied by Claude. Inferred lines are never applied.
+4. **Revise.** Lines can be scratched, replaced or rebuilt. A scratched line adds a limit so it is not proposed again.
+
+## Commands
+
+Each command is a spoken phrase and a slash command. Every phrase contains "mask", so an ordinary "check" or "try" does not trigger anything.
+
+| Say | Type | Effect |
 | --- | --- | --- |
-| "Don the mask" / "Don the mask for coding" | `/larvah:don` | Puts the core lines and the right scenes on |
-| "Doff the mask" | `/larvah:doff` | Takes it off for the rest of the chat |
-| "Check the mask" | `/larvah:check` | Up to ten lines: what is in force, the budget, sources used and skipped |
-| "Scratch that from the mask" | `/larvah:scratch` | Removes a line, and anything built on it, and adds a limit so it isn't learned again |
-| "Mend the mask" / "Add this to the mask: …" | `/larvah:mend` | Proposed changes, numbered, for you to sign. The only way anything is saved |
-| "Remake the mask" | `/larvah:remake` | Rebuilds the mask from your whole history, after a backup |
-| "Lend the mask" | `/larvah:lend` | Writes your mask out to share (letter, Doc or skill file) |
-| "Try on this mask" | `/larvah:try` | Screens someone else's mask before you wear it |
+| "Don the mask" / "Don the mask for coding" | `/larvah:don` | Applies the core lines and the matching scenes |
+| "Doff the mask" | `/larvah:doff` | Removes the mask for the rest of the chat |
+| "Check the mask" | `/larvah:check` | Reports in ten lines or fewer: what is in force, the budget, sources used and skipped |
+| "Scratch that from the mask" | `/larvah:scratch` | Removes a line and anything built on it, and adds a limit against recording it again |
+| "Mend the mask" / "Add this to the mask: …" | `/larvah:mend` | Lists proposed changes, numbered, for approval. The only path that saves anything |
+| "Remake the mask" | `/larvah:remake` | Rebuilds the mask from the full history, after a backup |
+| "Lend the mask" | `/larvah:lend` | Writes the mask out for sharing (letter, Doc or skill file) |
+| "Try on this mask" | `/larvah:try` | Screens another person's mask before it is worn |
 
-Every phrase contains "mask", so an everyday "check" or "try" never fires by accident.
+## Components
 
-## What is in the box
-
-| Part | Where | Job |
+| Part | Location | Function |
 | --- | --- | --- |
 | Skills | `skills/` | The eight commands above, plus an internal `store` skill that reads and writes the mask |
 | Mender (agent) | `agents/mender.md` | Proposes changes to the mask; never writes to it |
-| Maker (agent) | `agents/maker.md` | Drafts skills, agents or hooks for repeated duties; never installs |
-| Dresser (hook) | `hooks/`, `scripts/dresser.sh` | Puts the mask on at session start in Cowork and Claude Code |
-| Stagehand (hook) | `hooks/`, `scripts/stagehand.sh` | Repeats the core lines each message; off unless you switch it on |
-| `larvahctl` | `scripts/larvahctl.py` | The exact work: worn lines, secret scan, refusals, budget, lending, screening |
-| Prompter, Doorkeeper, Herald | inside `don`, `try`, `lend` | Picks scenes, screens other people's masks, writes yours out |
+| Maker (agent) | `agents/maker.md` | Drafts skills, agents or hooks for repeated duties; never installs them |
+| Dresser (hook) | `hooks/`, `scripts/dresser.sh` | Applies the mask at session start in Cowork and Claude Code |
+| Stagehand (hook) | `hooks/`, `scripts/stagehand.sh` | Restates the core lines each message; off by default |
+| `larvahctl` | `scripts/larvahctl.py` | Worn-line rules, secret scan, refusals, budgets, lending and screening |
+| Prompter, Doorkeeper, Herald | inside `don`, `try`, `lend` | Scene selection, screening of borrowed masks, and writing the mask out |
 
 Only skills load in the phone app. Hooks and agents run in Cowork and Claude Code.
 
-## Where the mask lives
+## Storage
 
-- **The workshop copy** (Claude Code and any chat with file tools): `~/.claude/larvah/mask.json`. Set `LARVAH_HOME` to use another folder.
-- **Claude's memory** (the phone app): topics named `Larvah: core lines`, `Larvah: scenes` and `Larvah: scene <name>`. Larvah never touches other memory topics.
+- **File copy** (Claude Code and any chat with file tools): `~/.claude/larvah/mask.json`. `LARVAH_HOME` selects another folder.
+- **Claude's memory** (phone app): topics named `Larvah: core lines`, `Larvah: scenes` and `Larvah: scene <name>`. No other memory topic is read or changed.
 
-The workshop copy is JSON, not YAML, so the tool needs nothing installed beyond Python 3.
+The file copy is JSON, so the tool needs only Python 3.
 
-## Rules it keeps
+Larvah is intended as the only memory-related plugin in use. It is not designed to run alongside other memory plugins.
 
-- **Nothing unsigned.** `larvahctl` writes only when given `--approved`, and the skills pass that only after you said yes to that exact change. Agents and scheduled runs never pass it.
-- **Only stated or confirmed lines are worn.** Observed lines wait for you. Inferred lines are never worn.
-- **Never recorded:** passwords, keys, card and ID numbers.
-- **Never written:** a line that would make Claude stop flagging mistakes, risks or disagreements.
-- **The house rules come first.** Claude's own rules and Anthropic's rules apply whatever the mask says, and a line is instructions, not permissions.
-- **Budgets:** core lines 600 tokens, scenes 3,000 each (at most two at a time), a borrowed mask 400.
+## Constraints
 
-## Try it
+- **Approval gate.** `larvahctl` writes only with `--approved`, which skills pass only after a yes to that exact change. Agents and scheduled runs never pass it.
+- **Worn lines.** Only stated lines, and observed lines that have been confirmed, are applied.
+- **Never recorded.** Passwords, keys, card numbers and ID numbers.
+- **Never written.** Any line that would stop Claude from flagging mistakes, risks or disagreements.
+- **Precedence.** Claude's own rules and Anthropic's rules apply whatever the mask says. A line is an instruction, not a permission.
+- **Budgets.** Core lines 600 tokens, scenes 3,000 each (at most two at a time), a borrowed mask 400.
 
-Load the plugin from this folder:
+## Install and test
 
 ```bash
 git clone https://github.com/markpoon/larvah
 claude --plugin-dir ./larvah
 ```
 
-Then say "add this to the mask: do five rounds of review before answering", sign the change, and say "don the mask". Run the tests with:
+Example: `add this to the mask: do five rounds of review before answering`, approve the change, then `don the mask`.
 
 ```bash
 cd larvah && python3 -m unittest discover -s tests
 ```
 
-See [TESTING.md](TESTING.md) for what has been checked and the memory tests still to run.
+[TESTING.md](TESTING.md) lists what has been verified and the memory tests still to run. The design is in [Larvah plan.md](Larvah%20plan.md).
 
 ## License
 
-[MIT](LICENSE), © 2026 Mark Poon. Use it, change it, share it; keep the notice.
+[MIT](LICENSE), © 2026 Mark Poon.
 
-## Names
+## Naming
 
-The plugin is called Larvah, a misspelling of the Latin word for a mask. The thing you put on and take off is still "the mask". A project called [TTigger/mask](https://github.com/TTigger/mask) exists (a persona-switching framework), which is why the plugin does not use the plain name.
+- **Larvah:** the plugin, from *larva*, Latin for a mask.
+- **The mask:** the written record that is put on and taken off.
+- **Theatre terms:** the helper parts (Mender, Maker, Dresser, Stagehand, Prompter, Doorkeeper, Herald) are named for stage roles.
+
+The plain name "mask" is already used by other projects, including a persona-switching framework, so the plugin uses a distinct spelling.

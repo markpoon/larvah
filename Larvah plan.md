@@ -1,8 +1,6 @@
 # Larvah: a stage mask for Claude
 
-Nov 21, 2026 · @Mark Poon
-
-Larvah is a plugin for Claude. It keeps a written mask of how you want Claude to work with you, and when you say "don the mask", Claude works under it. There is one mask, and it is either on or off. You approve every change to the mask, and nothing leaves Claude. This tab is the current plan. The household draft that came before it is kept in the file `Household draft.md`.
+Larvah is a plugin for Claude. It keeps a written mask of how you want Claude to work with you, and when you say "don the mask", Claude works under it. There is one mask, and it is either on or off. You approve every change to the mask, and nothing leaves Claude.
 
 ## The theme
 
@@ -97,7 +95,7 @@ The mask lives in Claude's own records, so one public plugin serves everyone and
 
 | Store | Capacity | Loads only what's needed? | Edit on a phone | Catch |
 | --- | --- | --- | --- | --- |
-| Memory, one topic per scene | A size cap per topic: about 48 KB in my own sessions, which may differ for others | Yes: topic names are always visible, and contents are read only when needed | Yes, by asking | Memory filters what it stores, and Anthropic can change how it works |
+| Memory, one topic per scene | A size cap per topic: about 48 KB in test sessions, which may differ for others | Yes: topic names are always visible, and contents are read only when needed | Yes, by asking | Memory filters what it stores, and Anthropic can change how it works |
 | A personal mask skill | Large: a short SKILL.md plus one reference file per scene | Yes: the description loads first, and reference files only when used | No; a change means a new upload | Larvah builds the file and you upload it |
 | A Claude Doc, one tab per scene | Large | Yes, if a skill can read a single tab | Yes, directly | Untested: whether a skill in chat can read a Doc |
 | Past-chat search | Your whole history | Yes, by search | Not needed | The archive only |
@@ -243,7 +241,7 @@ Several plugins already learn from their people, but none keeps a mask you put o
 | [skilltrace](https://github.com/Lover0ne/skilltrace) | Turns finished work into skills without asking | A warning | Unasked new staff are the sprawl Larvah avoids |
 | [mystique](https://awesome.ecosyste.ms/projects/github.com%2Fmtking2%2Fmystique) | A switchable role re-added every turn by a hook | The Stagehand | Roles written by hand, not learned |
 
-**Names.** The earlier name check, on Nov 21, found that **seneschal** is already taken by [an AI pipeline orchestrator built on Claude](https://github.com/Fishy49/seneschal), so it's out, and that **rusui** turned up no matches. The theatre names were checked on Nov 23. [TTigger/mask](https://github.com/TTigger/mask) is an existing Claude Code project with the same name: a framework that turns a source into a switchable persona. On Nov 24 the plugin was renamed **Larvah**, a deliberate misspelling of the old word for a mask (Latin *larva*), because "Larva" was already in use on GitHub and "Mask" overlapped TTigger/mask. A GitHub name search found one unrelated repository called larvah. The commands and the mask itself keep their theatre names. The search found no plugin or agent named Stagehand, Prompter, Mender or Dresser, but the search was shallow, and Maker, Herald and Doorkeeper were not checked. "Stagehand" is also the name of a browser-automation library, which may cause confusion. The helper names sit under the plugin's prefix, as in `larvah:mender`, so common words such as dresser and prompter shouldn't clash. Re-check every name before publishing.
+**Names.** The plugin is named Larvah, a respelling of the Latin *larva*, a mask. The plain name "mask" is used by other projects, including [TTigger/mask](https://github.com/TTigger/mask), a framework that turns a source into a switchable persona, so a distinct spelling avoids the overlap. The helper names (Mender, Maker, Dresser, Stagehand, Prompter, Doorkeeper, Herald) sit under the plugin's prefix, as in `larvah:mender`. "Stagehand" is also the name of a browser-automation library. Names should be re-checked before any directory submission.
 
 ## Roadmap
 

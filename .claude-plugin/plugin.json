@@ -1,7 +1,7 @@
 {
   "name": "larvah",
   "version": "0.1.0",
-  "description": "A written mask of how you want Claude to work. Say \"don the mask\" to put it on and \"doff the mask\" to take it off. You approve every change.",
+  "description": "A conduit between Claude and the person it works with: a written mask of approved preferences, limits and habits that is put on (don) and taken off (doff). Every change needs explicit approval.",
   "author": {
     "name": "Mark Poon"
   },
