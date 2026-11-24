@@ -4,8 +4,8 @@ One row per run. Result is PASS, FAIL or SKIP. Put what was observed in Notes, e
 
 | Date | ID | Venue and version | Result | Notes |
 | --- | --- | --- | --- | --- |
-| | M1 | | | |
-| | M2 | | | |
+| 2026-11-24 | M1 | Chat with memory (reported by user) | PASS | Reported as success by the user; no further detail given |
+| 2026-11-24 | M2 | Chat with memory (reported by user) | PASS | Reported as success by the user; no further detail given |
 | | M3 | | | |
 | | M4 | | | |
 | | P1 | | | |
