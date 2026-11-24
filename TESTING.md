@@ -11,6 +11,10 @@ Everything below was checked in Claude Code on a Mac. **Nothing has been tested 
 | Dresser hook, end to end | Fresh headless session with `--plugin-dir`, a mask holding one line that asks for the code word PELICAN, and the question "what rule were you given at session start?" | Claude quoted the rule and ended with PELICAN. The canary reached Claude |
 | `check` by voice | Headless session, said "Check the mask" | The skill loaded, ran `larvahctl.py check`, and reported in under ten lines, including the file location and that memory was not checked |
 | `scratch` by voice | Headless session, said "Scratch that from the mask: …" | The line was removed, the "Do not record again" limit was added, and the file was confirmed afterward |
+| Test core line "we live and grow together": unsigned add, signed add, duplicate, `core`, `check` | `larvahctl` on a temporary mask | Unsigned add refused (PROPOSED), signed add saved, duplicate refused, core and check correct (7 of 600 tokens) |
+| After-a-load compare | Memory text piped to `larvahctl diff` | Same text: "NO DIFFERENCES". Edited and new lines: reported as CHANGED? and NEW |
+| Dresser, with the test line | Headless session, no phrase said | Claude quoted the line exactly |
+| `doff`, `check` by voice; Stagehand on and off | Headless sessions | "Mask off" reply; `check` reported the line, budget and settings; Stagehand silent when off and restated the line each message when on |
 
 ## Not checked yet
 
