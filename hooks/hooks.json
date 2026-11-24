@@ -1,0 +1,26 @@
+{
+  "description": "Larvah: the Dresser puts the mask on at session start, and the Stagehand keeps it on (off unless switched on).",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/dresser.sh\""
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/stagehand.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

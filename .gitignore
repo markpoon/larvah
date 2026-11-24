@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.DS_Store
+# Earlier household-themed draft, kept locally only
+Household draft.md

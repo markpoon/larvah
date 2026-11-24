@@ -1,0 +1,10 @@
+{
+  "name": "larvah",
+  "version": "0.1.0",
+  "description": "A written mask of how you want Claude to work. Say \"don the mask\" to put it on and \"doff the mask\" to take it off. You approve every change.",
+  "author": {
+    "name": "Mark Poon"
+  },
+  "license": "MIT",
+  "keywords": ["mask", "preferences", "memory", "profile", "persona", "workflow"]
+}
