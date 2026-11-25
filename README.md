@@ -1,5 +1,11 @@
 # Larvah
 
+[![test](https://github.com/markpoon/larvah/actions/workflows/test.yml/badge.svg)](https://github.com/markpoon/larvah/actions/workflows/test.yml)
+
+**Why it exists:** it lets a person decide exactly what an AI assistant remembers about them and how it behaves. Every remembered line is shown and approved first, secrets are refused, and nothing leaves the person's machine.
+
+**At a glance:** 8 skills, 2 agents, 2 hooks and one standard-library Python control script, covered by 52 unit and end-to-end tests that run in CI on Linux and macOS with Python 3.9 and 3.12.
+
 Larvah is a plugin that carries a written mask between Claude and the person it works with. The mask is a short, approved record of the terms of the interface: preferences, limits, projects, facts, habits and priorities. Larvah is the conduit. It proposes terms, the person accepts or rejects each one, and the accepted terms are worn by Claude until the mask is taken off.
 
 The mask has two states, on and off. Every change to it needs the person's explicit approval, and nothing leaves Claude: there are no servers, and nothing is sent anywhere.
